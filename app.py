@@ -118,6 +118,50 @@ def update_save_status():
     finally:
         conn.close()
 
+@app.route('/update-news-read-status', methods=['POST'])
+def update_read_status():
+    """
+    Update the 'is_saved' status for a specific news item.
+    """
+    data = request.json
+    news_id = data.get('news_id')
+    is_read = data.get('is_read')  # 0 or 1
+
+    if news_id is None or is_read not in [0, 1]:
+        return jsonify({"error": "Invalid request data"}), 400
+
+    config = {
+        'user': os.getenv('DB_USER'),
+        'password': os.getenv('DB_PASSWORD'),
+        'host': os.getenv('DB_HOST'),
+        'database': os.getenv('DB_NAME'),
+        'cursorclass': pymysql.cursors.DictCursor
+    }
+
+    table_name = get_week_table_name()
+
+    conn = pymysql.connect(**config)
+    try:
+        with conn.cursor() as cursor:
+            cursor.execute(f"SHOW TABLES LIKE '{table_name}';")
+            if not cursor.fetchone():
+                return jsonify({"error": "Weekly table does not exist"}), 503
+
+            cursor.execute(
+                f"UPDATE `{table_name}` SET is_read = %s WHERE news_id = %s",
+                (is_read, news_id)
+            )
+            conn.commit()
+            if cursor.rowcount > 0:
+                return jsonify({"success": True}), 200
+            else:
+                return jsonify({"error": "News item not found"}), 404
+    except pymysql.MySQLError as e:
+        return jsonify({"error": f"Database error: {str(e)}"}), 500
+    finally:
+        conn.close()
+
+
 @app.route('/.well-known/assetlinks.json')
 def assetlinks():
     return jsonify([
