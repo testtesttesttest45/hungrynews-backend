@@ -118,6 +118,21 @@ def update_save_status():
     finally:
         conn.close()
 
+@app.route('/.well-known/assetlinks.json')
+def assetlinks():
+    return jsonify([
+        {
+            "relation": ["delegate_permission/common.handle_all_urls"],
+            "target": {
+                "namespace": "hungry_news",
+                "package_name": "com.example.hungry_news",
+                "sha256_cert_fingerprints": [
+                    "1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"
+                ]
+            }
+        }
+    ])
+
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))  # default to 5000
