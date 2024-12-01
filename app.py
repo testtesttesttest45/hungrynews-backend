@@ -127,7 +127,7 @@ def assetlinks():
                 "namespace": "hungry_news",
                 "package_name": "com.example.hungry_news",
                 "sha256_cert_fingerprints": [
-                    "1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"
+                    "55:49:E1:D9:DF:E7:17:20:81:F8:6B:E1:05:9D:67:B2:EA:2F:08:B2:05:04:12:02:5F:EC:E8:AF:1D:D6:66:79"
                 ]
             }
         }
