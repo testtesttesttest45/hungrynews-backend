@@ -6,6 +6,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 import requests  # To fetch external content
+from pytz import timezone
 
 app = Flask(__name__)
 load_dotenv()
@@ -16,7 +17,10 @@ def get_week_table_name(today=None):
     get table name for current week (monday to sunday)
     If today variable is not provided, use the current date.
     """
-    today = today or datetime.now()
+    
+    singapore_tz  = timezone("Asia/Singapore")
+    
+    today = today or datetime.now(tz=singapore_tz)
     print(f"Debugging: Using date {today.strftime('%d %B %Y')}")
     
     # Find the start and end of the week
