@@ -21,7 +21,7 @@ def get_week_table_name(today=None):
     singapore_tz  = timezone("Asia/Singapore")
     
     today = today or datetime.now(tz=singapore_tz)
-    print(f"Debugging: Using date {today.strftime('%d %B %Y')}")
+    print(f"Debugging: Using date {today.strftime('%d %B %Y')}, time now is {today.strftime('%H:%M:%S')}")
     
     # Find the start and end of the week
     start_of_week = today - timedelta(days=today.weekday())  # Monday
